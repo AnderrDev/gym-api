@@ -14,7 +14,7 @@ async function main() {
         create: {
             email: 'cifuentees224@gmail.com',
             password: hashedPassword,
-            name: 'Andres Cifuentes',
+            name: 'Anderson Pulido',
             age: 25,
             weight: 80,
             height: 175,
