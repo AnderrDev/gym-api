@@ -50,6 +50,8 @@ let RoutinesService = class RoutinesService {
                                 exerciseId: ex.exerciseId,
                                 targetSets: ex.targetSets,
                                 targetReps: ex.targetReps,
+                                restTime: ex.restTime,
+                                defaultWeight: ex.defaultWeight,
                                 order: ex.order,
                             })),
                         },
@@ -112,12 +114,57 @@ let RoutinesService = class RoutinesService {
             },
         });
     }
-    update(id, updateRoutineDto) {
+    async update(id, updateRoutineDto) {
+        const { name, description, userId, days } = updateRoutineDto;
+        if (days) {
+            for (const day of days) {
+                if (day.exercises) {
+                    for (const ex of day.exercises) {
+                        const exerciseExists = await this.prisma.exercise.findUnique({
+                            where: { id: ex.exerciseId },
+                        });
+                        if (!exerciseExists) {
+                            throw new Error(`Exercise with ID ${ex.exerciseId} not found`);
+                        }
+                    }
+                }
+            }
+        }
+        await this.prisma.workoutDay.deleteMany({
+            where: { routineId: id },
+        });
         return this.prisma.routine.update({
             where: { id },
             data: {
-                name: updateRoutineDto.name,
-                description: updateRoutineDto.description,
+                name,
+                description,
+                workoutDays: {
+                    create: days?.map((day) => ({
+                        name: day.name,
+                        order: day.order,
+                        routineExercises: {
+                            create: day.exercises?.map((ex) => ({
+                                exerciseId: ex.exerciseId,
+                                targetSets: ex.targetSets,
+                                targetReps: ex.targetReps,
+                                restTime: ex.restTime,
+                                defaultWeight: ex.defaultWeight,
+                                order: ex.order,
+                            })),
+                        },
+                    })),
+                },
+            },
+            include: {
+                workoutDays: {
+                    include: {
+                        routineExercises: {
+                            include: {
+                                exercise: true,
+                            },
+                        },
+                    },
+                },
             },
         });
     }

@@ -45,6 +45,8 @@ export class RoutinesService {
                 exerciseId: ex.exerciseId,
                 targetSets: ex.targetSets,
                 targetReps: ex.targetReps,
+                restTime: ex.restTime,
+                defaultWeight: ex.defaultWeight,
                 order: ex.order,
               })),
             },
@@ -111,13 +113,63 @@ export class RoutinesService {
     });
   }
 
-  update(id: string, updateRoutineDto: UpdateRoutineDto) {
-    // Implementación simplificada para actualización
+  async update(id: string, updateRoutineDto: UpdateRoutineDto) {
+    const { name, description, userId, days } = updateRoutineDto;
+
+    // Validar que todos los ejercicios existen antes de actualizar
+    if (days) {
+      for (const day of days) {
+        if (day.exercises) {
+          for (const ex of day.exercises) {
+            const exerciseExists = await this.prisma.exercise.findUnique({
+              where: { id: ex.exerciseId },
+            });
+            if (!exerciseExists) {
+              throw new Error(`Exercise with ID ${ex.exerciseId} not found`);
+            }
+          }
+        }
+      }
+    }
+
+    // Eliminar días existentes (cascade eliminará los ejercicios)
+    await this.prisma.workoutDay.deleteMany({
+      where: { routineId: id },
+    });
+
+    // Actualizar rutina y recrear días
     return this.prisma.routine.update({
       where: { id },
       data: {
-        name: updateRoutineDto.name,
-        description: updateRoutineDto.description,
+        name,
+        description,
+        workoutDays: {
+          create: days?.map((day) => ({
+            name: day.name,
+            order: day.order,
+            routineExercises: {
+              create: day.exercises?.map((ex) => ({
+                exerciseId: ex.exerciseId,
+                targetSets: ex.targetSets,
+                targetReps: ex.targetReps,
+                restTime: ex.restTime,
+                defaultWeight: ex.defaultWeight,
+                order: ex.order,
+              })),
+            },
+          })),
+        },
+      },
+      include: {
+        workoutDays: {
+          include: {
+            routineExercises: {
+              include: {
+                exercise: true,
+              },
+            },
+          },
+        },
       },
     });
   }

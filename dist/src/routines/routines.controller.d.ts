@@ -15,8 +15,10 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
+                restTime: number | null;
+                defaultWeight: number | null;
                 exerciseId: string;
+                workoutDayId: string;
             }[];
         } & {
             id: string;
@@ -50,11 +52,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    category: string | null;
-                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
+                    category: string | null;
+                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -63,8 +65,10 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
+                restTime: number | null;
+                defaultWeight: number | null;
                 exerciseId: string;
+                workoutDayId: string;
             })[];
         } & {
             id: string;
@@ -88,11 +92,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    category: string | null;
-                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
+                    category: string | null;
+                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -101,8 +105,10 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
+                restTime: number | null;
+                defaultWeight: number | null;
                 exerciseId: string;
+                workoutDayId: string;
             })[];
         } & {
             id: string;
@@ -126,11 +132,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    category: string | null;
-                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
+                    category: string | null;
+                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -139,8 +145,10 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
+                restTime: number | null;
+                defaultWeight: number | null;
                 exerciseId: string;
+                workoutDayId: string;
             })[];
         } & {
             id: string;
@@ -158,14 +166,46 @@ export declare class RoutinesController {
         updatedAt: Date;
         userId: string;
     }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    update(id: string, updateRoutineDto: UpdateRoutineDto): import("@prisma/client").Prisma.Prisma__RoutineClient<{
+    update(id: string, updateRoutineDto: UpdateRoutineDto): Promise<{
+        workoutDays: ({
+            routineExercises: ({
+                exercise: {
+                    id: string;
+                    name: string;
+                    description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    category: string | null;
+                    muscleGroup: string | null;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                order: number;
+                targetSets: number;
+                targetReps: string | null;
+                restTime: number | null;
+                defaultWeight: number | null;
+                exerciseId: string;
+                workoutDayId: string;
+            })[];
+        } & {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+            order: number;
+            routineId: string;
+        })[];
+    } & {
         id: string;
         name: string;
         description: string | null;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    }>;
     remove(id: string): import("@prisma/client").Prisma.Prisma__RoutineClient<{
         id: string;
         name: string;

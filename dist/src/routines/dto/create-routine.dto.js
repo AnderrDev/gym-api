@@ -18,6 +18,8 @@ class CreateRoutineExerciseDto {
     exerciseId;
     targetSets;
     targetReps;
+    restTime;
+    defaultWeight;
     order;
 }
 exports.CreateRoutineExerciseDto = CreateRoutineExerciseDto;

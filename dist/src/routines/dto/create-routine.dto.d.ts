@@ -13,5 +13,7 @@ export declare class CreateRoutineExerciseDto {
     exerciseId: string;
     targetSets: number;
     targetReps: string;
+    restTime?: number;
+    defaultWeight?: number;
     order: number;
 }

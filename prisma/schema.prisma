@@ -70,6 +70,8 @@ model RoutineExercise {
   exercise     Exercise   @relation(fields: [exerciseId], references: [id])
   targetSets   Int        @default(3)
   targetReps   String?    // E.g., "8-12"
+  restTime     Int?       // Tiempo de descanso en segundos
+  defaultWeight Float?    // Peso predefinido en kg
   order        Int        // Orden dentro del día
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
