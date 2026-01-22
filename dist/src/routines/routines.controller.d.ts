@@ -17,8 +17,8 @@ export declare class RoutinesController {
                 targetReps: string | null;
                 restTime: number | null;
                 defaultWeight: number | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             }[];
         } & {
             id: string;
@@ -31,9 +31,9 @@ export declare class RoutinesController {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }>;
     generate(userId: string, config?: {
@@ -52,11 +52,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     category: string | null;
                     muscleGroup: string | null;
                     description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
@@ -67,8 +67,8 @@ export declare class RoutinesController {
                 targetReps: string | null;
                 restTime: number | null;
                 defaultWeight: number | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -81,9 +81,9 @@ export declare class RoutinesController {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     })[]>;
     findByUser(userId: string): import("@prisma/client").Prisma.PrismaPromise<({
@@ -92,11 +92,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     category: string | null;
                     muscleGroup: string | null;
                     description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
@@ -107,8 +107,8 @@ export declare class RoutinesController {
                 targetReps: string | null;
                 restTime: number | null;
                 defaultWeight: number | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -121,9 +121,9 @@ export declare class RoutinesController {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     })[]>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__RoutineClient<({
@@ -132,11 +132,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     category: string | null;
                     muscleGroup: string | null;
                     description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
@@ -147,8 +147,8 @@ export declare class RoutinesController {
                 targetReps: string | null;
                 restTime: number | null;
                 defaultWeight: number | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -161,9 +161,9 @@ export declare class RoutinesController {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     update(id: string, updateRoutineDto: UpdateRoutineDto): Promise<{
@@ -172,11 +172,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
                     category: string | null;
                     muscleGroup: string | null;
                     description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
@@ -187,8 +187,8 @@ export declare class RoutinesController {
                 targetReps: string | null;
                 restTime: number | null;
                 defaultWeight: number | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -201,17 +201,17 @@ export declare class RoutinesController {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }>;
     remove(id: string): import("@prisma/client").Prisma.Prisma__RoutineClient<{
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
 }
