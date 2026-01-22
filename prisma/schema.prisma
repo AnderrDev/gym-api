@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String    // Contraseña hasheada
+  name      String?
+  age       Int?
+  height    Float?    // en cm o metros
+  weight    Float?    // en kg
+  routines  Routine[]
+  sessions  WorkoutSession[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Exercise {
+  id              String            @id @default(uuid())
+  name            String
+  category        String?           // Máquina, Peso Libre, Polea, etc.
+  muscleGroup     String?           // Pecho, Espalda, etc.
+  description     String?
+  routineExercises RoutineExercise[]
+  setLogs         SetLog[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Routine {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  workoutDays WorkoutDay[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model WorkoutDay {
+  id               String            @id @default(uuid())
+  order            Int               // 1 para Día 1, 2 para Día 2, etc.
+  name             String            // Push, Pull, Legs, etc.
+  routineId        String
+  routine          Routine           @relation(fields: [routineId], references: [id])
+  routineExercises RoutineExercise[]
+  sessions         WorkoutSession[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model RoutineExercise {
+  id           String     @id @default(uuid())
+  workoutDayId String
+  workoutDay   WorkoutDay @relation(fields: [workoutDayId], references: [id])
+  exerciseId   String
+  exercise     Exercise   @relation(fields: [exerciseId], references: [id])
+  targetSets   Int        @default(3)
+  targetReps   String?    // E.g., "8-12"
+  order        Int        // Orden dentro del día
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model WorkoutSession {
+  id           String     @id @default(uuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  workoutDayId String
+  workoutDay   WorkoutDay @relation(fields: [workoutDayId], references: [id])
+  date         DateTime   @default(now())
+  setLogs      SetLog[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model SetLog {
+  id               String         @id @default(uuid())
+  workoutSessionId String
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  exerciseId       String
+  exercise         Exercise       @relation(fields: [exerciseId], references: [id])
+  setNumber        Int
+  weight           Float          @default(0)
+  reps             Int            @default(0)
+  isCompleted      Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}

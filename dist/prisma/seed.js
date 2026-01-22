@@ -1,0 +1,157 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+async function main() {
+    const user = await prisma.user.upsert({
+        where: { email: 'admin@gym.com' },
+        update: {},
+        create: {
+            email: 'admin@gym.com',
+            name: 'Admin User',
+            password: 'adminPassword123',
+            age: 25,
+            height: 175,
+            weight: 75,
+        },
+    });
+    console.log('User created:', user.email);
+    const routine = await prisma.routine.create({
+        data: {
+            name: 'Rutina de 7 Días - Definición y Masa Muscular',
+            description: 'Enfoque en Push/Pull/Legs y metabólico para maximizar el desarrollo muscular.',
+            userId: user.id,
+        },
+    });
+    console.log('Routine created:', routine.name);
+    const daysData = [
+        {
+            name: 'PUSH (Pecho, Hombro, Tríceps)',
+            order: 1,
+            exercises: [
+                { name: 'Press banca barra', targetSets: 4, targetReps: '6–8', muscleGroup: 'Pecho' },
+                { name: 'Press inclinado mancuernas', targetSets: 4, targetReps: '8–10', muscleGroup: 'Pecho' },
+                { name: 'Press plano mancuernas o máquina pecho', targetSets: 3, targetReps: '10–12', muscleGroup: 'Pecho' },
+                { name: 'Aperturas en polea (alto → bajo)', targetSets: 3, targetReps: '12–15', muscleGroup: 'Pecho' },
+                { name: 'Press militar barra o mancuernas', targetSets: 3, targetReps: '6–8', muscleGroup: 'Hombro' },
+                { name: 'Extensión tríceps en polea', targetSets: 3, targetReps: '12–15', muscleGroup: 'Tríceps' },
+                { name: 'Press francés barra EZ', targetSets: 3, targetReps: '10–12', muscleGroup: 'Tríceps' },
+            ],
+        },
+        {
+            name: 'PULL PESADO (Espalda, Bíceps)',
+            order: 2,
+            exercises: [
+                { name: 'Jalón al pecho', targetSets: 4, targetReps: '6–8', muscleGroup: 'Espalda' },
+                { name: 'Remo con barra', targetSets: 4, targetReps: '6–8', muscleGroup: 'Espalda' },
+                { name: 'Jalón cerrado', targetSets: 3, targetReps: '10–12', muscleGroup: 'Espalda' },
+                { name: 'Remo en polea', targetSets: 3, targetReps: '12', muscleGroup: 'Espalda' },
+                { name: 'Face pulls', targetSets: 3, targetReps: '15–20', muscleGroup: 'Hombro Posterior' },
+                { name: 'Curl bíceps barra', targetSets: 3, targetReps: '8–10', muscleGroup: 'Bíceps' },
+                { name: 'Curl martillo', targetSets: 3, targetReps: '12', muscleGroup: 'Bíceps' },
+                { name: 'Pullover polea (finisher) ⭐', targetSets: 1, targetReps: '20', muscleGroup: 'Espalda' },
+            ],
+        },
+        {
+            name: 'PIERNA (Cuádriceps dominante)',
+            order: 3,
+            exercises: [
+                { name: 'Sentadilla libre', targetSets: 4, targetReps: '6–8', muscleGroup: 'Pierna' },
+                { name: 'Prensa inclinada pies bajos', targetSets: 4, targetReps: '10–12', muscleGroup: 'Pierna' },
+                { name: 'Hack squat', targetSets: 3, targetReps: '8–10', muscleGroup: 'Pierna' },
+                { name: 'Zancadas caminando', targetSets: 3, targetReps: '10–12 c/pierna', muscleGroup: 'Pierna' },
+                { name: 'Extensiones + drop', targetSets: 3, targetReps: '12–15 + drop', muscleGroup: 'Pierna' },
+                { name: 'Gemelos de pie', targetSets: 4, targetReps: '12–15', muscleGroup: 'Pierna' },
+            ],
+        },
+        {
+            name: 'HOMBRO + ABDOMEN',
+            order: 4,
+            exercises: [
+                { name: 'Press militar', targetSets: 4, targetReps: '6–8', muscleGroup: 'Hombro' },
+                { name: 'Elevación lateral en polea', targetSets: 4, targetReps: '12–15', muscleGroup: 'Hombro' },
+                { name: 'Elevación lateral mancuerna', targetSets: 3, targetReps: '15–20', muscleGroup: 'Hombro' },
+                { name: 'Reverse fly máquina/polea', targetSets: 3, targetReps: '12–15', muscleGroup: 'Hombro Posterior' },
+                { name: 'Face pull', targetSets: 3, targetReps: '15–20', muscleGroup: 'Hombro Posterior' },
+                { name: 'Crunch en polea', targetSets: 3, targetReps: '12–15', muscleGroup: 'Abdomen' },
+                { name: 'Elevación de piernas', targetSets: 3, targetReps: '10–15', muscleGroup: 'Abdomen' },
+                { name: 'Plancha RKC', targetSets: 2, targetReps: '20–30 seg', muscleGroup: 'Abdomen' },
+            ],
+        },
+        {
+            name: 'PULL METABÓLICO (Espalda + Brazos)',
+            order: 5,
+            exercises: [
+                { name: 'Jalón en polea agarre neutro estrecho', targetSets: 4, targetReps: '12–15', muscleGroup: 'Espalda' },
+                { name: 'Remo en máquina pecho soportado', targetSets: 4, targetReps: '12–15', muscleGroup: 'Espalda' },
+                { name: 'Remo en polea baja (agarre V o neutro)', targetSets: 3, targetReps: '12–15', muscleGroup: 'Espalda' },
+                { name: 'Reverse fly en máquina o polea', targetSets: 3, targetReps: '15–20', muscleGroup: 'Espalda/Hombro' },
+                { name: 'Curl en polea de pie (tensión constante)', targetSets: 3, targetReps: '12–15', muscleGroup: 'Bíceps' },
+                { name: 'Curl inclinado mancuernas', targetSets: 3, targetReps: '12–15', muscleGroup: 'Bíceps' },
+                { name: 'Curl martillo o rope hammer', targetSets: 2, targetReps: '12–15', muscleGroup: 'Bíceps' },
+                { name: 'Face pulls moderados', targetSets: 2, targetReps: '15–20', muscleGroup: 'Hombro' },
+            ],
+        },
+        {
+            name: 'PIERNA (Femoral + Glúteo)',
+            order: 6,
+            exercises: [
+                { name: 'Peso muerto rumano', targetSets: 4, targetReps: '6–8', muscleGroup: 'Pierna' },
+                { name: 'Hip Thrust con barra', targetSets: 4, targetReps: '8–10', muscleGroup: 'Glúteo' },
+                { name: 'Curl femoral acostado o sentado', targetSets: 4, targetReps: '10–12', muscleGroup: 'Pierna' },
+                { name: 'Back extension (45° o horizontal)', targetSets: 3, targetReps: '12–15', muscleGroup: 'Espalda Baja' },
+                { name: 'Sentadilla búlgara mancuernas', targetSets: 3, targetReps: '10–12 por pierna', muscleGroup: 'Pierna' },
+                { name: 'Gemelo sentado o en máquina', targetSets: 4, targetReps: '12–15', muscleGroup: 'Pierna' },
+            ],
+        },
+        {
+            name: 'FULL BODY METABÓLICO + CORE',
+            order: 7,
+            exercises: [
+                { name: 'Sentadilla Hack', targetSets: 3, targetReps: '15–20', muscleGroup: 'Pierna' },
+                { name: 'Press inclinado mancuernas ', targetSets: 3, targetReps: '12–15', muscleGroup: 'Pecho' },
+                { name: 'Remo en polea baja ', targetSets: 3, targetReps: '12–15', muscleGroup: 'Espalda' },
+                { name: 'Elevaciones laterales', targetSets: 3, targetReps: '15–20', muscleGroup: 'Hombro' },
+                { name: 'Curl en polea', targetSets: 2, targetReps: '12–15', muscleGroup: 'Bíceps' },
+                { name: 'Tríceps cuerda', targetSets: 2, targetReps: '12–15', muscleGroup: 'Tríceps' },
+            ],
+        },
+    ];
+    for (const day of daysData) {
+        const workoutDay = await prisma.workoutDay.create({
+            data: {
+                name: day.name,
+                order: day.order,
+                routineId: routine.id,
+            },
+        });
+        for (let i = 0; i < day.exercises.length; i++) {
+            const exData = day.exercises[i];
+            const exercise = await prisma.exercise.create({
+                data: {
+                    name: exData.name,
+                    muscleGroup: exData.muscleGroup,
+                },
+            });
+            await prisma.routineExercise.create({
+                data: {
+                    workoutDayId: workoutDay.id,
+                    exerciseId: exercise.id,
+                    targetSets: exData.targetSets,
+                    targetReps: exData.targetReps,
+                    order: i + 1,
+                },
+            });
+        }
+    }
+    console.log('Seeding completed successfully!');
+}
+main()
+    .catch((e) => {
+    console.error(e);
+    process.exit(1);
+})
+    .finally(async () => {
+    await prisma.$disconnect();
+});
+//# sourceMappingURL=seed.js.map
