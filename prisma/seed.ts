@@ -1,19 +1,33 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    // 1. Crear Usuario por Defecto
+    // 0. Limpiar Base de Datos (Opcional pero recomendado para un seed limpio)
+    console.log('Cleaning database...');
+    await prisma.setLog.deleteMany();
+    await prisma.workoutSession.deleteMany();
+    await prisma.routineExercise.deleteMany();
+    await prisma.workoutDay.deleteMany();
+    await prisma.routine.deleteMany();
+    await prisma.exercise.deleteMany();
+    await prisma.user.deleteMany();
+
+    // 1. Crear Usuario de Prueba
+    const hashedPassword = await bcrypt.hash('testpassword', 10);
     const user = await prisma.user.upsert({
-        where: { email: 'admin@gym.com' },
-        update: {},
+        where: { email: 'user@test.com' },
+        update: {
+            password: hashedPassword,
+        },
         create: {
-            email: 'admin@gym.com',
-            name: 'Admin User',
-            password: 'adminPassword123', // En producción esto debe estar hasheado
-            age: 25,
-            height: 175,
-            weight: 75,
+            email: 'user@test.com',
+            name: 'Test Warrior',
+            password: hashedPassword,
+            age: 28,
+            height: 180,
+            weight: 82,
         },
     });
 
@@ -156,7 +170,53 @@ async function main() {
         }
     }
 
-    console.log('Seeding completed successfully!');
+    console.log('Days and exercises created.');
+
+    // 4. Crear Historial de Sesiones (Últimos 7 días)
+    const days = await prisma.workoutDay.findMany({
+        where: { routineId: routine.id },
+        include: { routineExercises: { include: { exercise: true } } },
+        orderBy: { order: 'asc' }
+    });
+
+    console.log('Simulating workout history...');
+
+    for (let i = 7; i > 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+
+        // Elegir un día de la rutina basado en la fecha
+        const dayToSync = days[(7 - i) % days.length];
+
+        const session = await prisma.workoutSession.create({
+            data: {
+                userId: user.id,
+                workoutDayId: dayToSync.id,
+                date: date,
+            }
+        });
+
+        // Crear logs para cada ejercicio del día
+        for (const re of dayToSync.routineExercises) {
+            const baseWeight = 20 + (Math.random() * 40); // Peso base aleatorio
+            const progression = (7 - i) * 2; // Simular que sube 2kg cada entrenamiento
+
+            for (let setIdx = 1; setIdx <= re.targetSets; setIdx++) {
+                await prisma.setLog.create({
+                    data: {
+                        workoutSessionId: session.id,
+                        exerciseId: re.exerciseId,
+                        setNumber: setIdx,
+                        weight: Math.round(baseWeight + progression),
+                        reps: 8 + Math.floor(Math.random() * 4),
+                        isCompleted: true
+                    }
+                });
+            }
+        }
+    }
+
+    console.log('Seeding completed successfully! Use user@test.com / testpassword to login.');
 }
 
 main()

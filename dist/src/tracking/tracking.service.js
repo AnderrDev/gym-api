@@ -17,8 +17,47 @@ let TrackingService = class TrackingService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    create(createTrackingDto) {
+    async create(createTrackingDto) {
         const { userId, workoutDayId, setLogs } = createTrackingDto;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const existingSession = await this.prisma.workoutSession.findFirst({
+            where: {
+                userId,
+                workoutDayId,
+                date: {
+                    gte: today,
+                    lt: tomorrow,
+                },
+            },
+            include: {
+                setLogs: true,
+            },
+        });
+        if (existingSession) {
+            await this.prisma.setLog.deleteMany({
+                where: { workoutSessionId: existingSession.id },
+            });
+            return this.prisma.workoutSession.update({
+                where: { id: existingSession.id },
+                data: {
+                    setLogs: {
+                        create: setLogs.map((log) => ({
+                            exerciseId: log.exerciseId,
+                            setNumber: log.setNumber,
+                            weight: log.weight,
+                            reps: log.reps,
+                            isCompleted: log.isCompleted ?? true,
+                        })),
+                    },
+                },
+                include: {
+                    setLogs: true,
+                },
+            });
+        }
         return this.prisma.workoutSession.create({
             data: {
                 userId,
@@ -47,7 +86,32 @@ let TrackingService = class TrackingService {
                     include: {
                         exercise: true,
                     },
+                    orderBy: {
+                        setNumber: 'asc',
+                    },
                 },
+            },
+            orderBy: {
+                date: 'desc',
+            },
+        });
+    }
+    findByUser(userId) {
+        return this.prisma.workoutSession.findMany({
+            where: { userId },
+            include: {
+                workoutDay: true,
+                setLogs: {
+                    include: {
+                        exercise: true,
+                    },
+                    orderBy: {
+                        setNumber: 'asc',
+                    },
+                },
+            },
+            orderBy: {
+                date: 'desc',
             },
         });
     }

@@ -8,6 +8,9 @@ class CreateUserDto {
     age;
     height;
     weight;
+    goal;
+    experienceLevel;
+    trainingMonths;
 }
 exports.CreateUserDto = CreateUserDto;
 //# sourceMappingURL=create-user.dto.js.map

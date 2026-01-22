@@ -19,6 +19,23 @@ let RoutinesService = class RoutinesService {
     }
     async create(createRoutineDto) {
         const { name, description, userId, days } = createRoutineDto;
+        await this.prisma.routine.deleteMany({
+            where: { userId },
+        });
+        if (days) {
+            for (const day of days) {
+                if (day.exercises) {
+                    for (const ex of day.exercises) {
+                        const exerciseExists = await this.prisma.exercise.findUnique({
+                            where: { id: ex.exerciseId },
+                        });
+                        if (!exerciseExists) {
+                            throw new Error(`Exercise with ID ${ex.exerciseId} not found`);
+                        }
+                    }
+                }
+            }
+        }
         return this.prisma.routine.create({
             data: {
                 name,

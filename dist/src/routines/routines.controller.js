@@ -17,13 +17,19 @@ const common_1 = require("@nestjs/common");
 const routines_service_1 = require("./routines.service");
 const create_routine_dto_1 = require("./dto/create-routine.dto");
 const update_routine_dto_1 = require("./dto/update-routine.dto");
+const routine_generator_service_1 = require("./routine-generator.service");
 let RoutinesController = class RoutinesController {
     routinesService;
-    constructor(routinesService) {
+    generatorService;
+    constructor(routinesService, generatorService) {
         this.routinesService = routinesService;
+        this.generatorService = generatorService;
     }
     create(createRoutineDto) {
         return this.routinesService.create(createRoutineDto);
+    }
+    generate(userId, config) {
+        return this.generatorService.generateRoutine(userId, config);
     }
     findAll() {
         return this.routinesService.findAll();
@@ -49,6 +55,14 @@ __decorate([
     __metadata("design:paramtypes", [create_routine_dto_1.CreateRoutineDto]),
     __metadata("design:returntype", void 0)
 ], RoutinesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('generate/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], RoutinesController.prototype, "generate", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
@@ -86,6 +100,7 @@ __decorate([
 ], RoutinesController.prototype, "remove", null);
 exports.RoutinesController = RoutinesController = __decorate([
     (0, common_1.Controller)('routines'),
-    __metadata("design:paramtypes", [routines_service_1.RoutinesService])
+    __metadata("design:paramtypes", [routines_service_1.RoutinesService,
+        routine_generator_service_1.RoutineGeneratorService])
 ], RoutinesController);
 //# sourceMappingURL=routines.controller.js.map

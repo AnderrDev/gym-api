@@ -1,9 +1,11 @@
 import { RoutinesService } from './routines.service';
 import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
+import { RoutineGeneratorService } from './routine-generator.service';
 export declare class RoutinesController {
     private readonly routinesService;
-    constructor(routinesService: RoutinesService);
+    private readonly generatorService;
+    constructor(routinesService: RoutinesService, generatorService: RoutineGeneratorService);
     create(createRoutineDto: CreateRoutineDto): Promise<{
         workoutDays: ({
             routineExercises: {
@@ -13,8 +15,8 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             }[];
         } & {
             id: string;
@@ -32,17 +34,27 @@ export declare class RoutinesController {
         updatedAt: Date;
         userId: string;
     }>;
+    generate(userId: string, config?: {
+        trainingDays?: number;
+        goal?: string;
+        experienceLevel?: string;
+    }): Promise<{
+        name: string;
+        description: string;
+        userId: any;
+        days: import("./routine-generator.service").GeneratedDay[];
+    }>;
     findAll(): import("@prisma/client").Prisma.PrismaPromise<({
         workoutDays: ({
             routineExercises: ({
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -51,8 +63,8 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -76,11 +88,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -89,8 +101,8 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -114,11 +126,11 @@ export declare class RoutinesController {
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -127,8 +139,8 @@ export declare class RoutinesController {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;

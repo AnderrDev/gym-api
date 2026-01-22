@@ -7,13 +7,16 @@ export declare class AuthService {
     constructor(prisma: PrismaService, jwtService: JwtService);
     register(dto: CreateUserDto): Promise<{
         id: string;
-        email: string;
         name: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        email: string;
         age: number | null;
         height: number | null;
         weight: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        goal: string | null;
+        experienceLevel: string | null;
+        trainingDays: number | null;
     }>;
     login(email: string, pass: string): Promise<{
         access_token: string;

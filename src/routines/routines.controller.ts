@@ -2,14 +2,26 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RoutinesService } from './routines.service';
 import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
+import { RoutineGeneratorService } from './routine-generator.service';
 
 @Controller('routines')
 export class RoutinesController {
-  constructor(private readonly routinesService: RoutinesService) { }
+  constructor(
+    private readonly routinesService: RoutinesService,
+    private readonly generatorService: RoutineGeneratorService
+  ) { }
 
   @Post()
   create(@Body() createRoutineDto: CreateRoutineDto) {
     return this.routinesService.create(createRoutineDto);
+  }
+
+  @Post('generate/:userId')
+  generate(
+    @Param('userId') userId: string,
+    @Body() config?: { trainingDays?: number, goal?: string, experienceLevel?: string }
+  ) {
+    return this.generatorService.generateRoutine(userId, config);
   }
 
   @Get()

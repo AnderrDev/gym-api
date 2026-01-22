@@ -7,8 +7,54 @@ import { PrismaService } from '../prisma/prisma.service';
 export class TrackingService {
   constructor(private prisma: PrismaService) { }
 
-  create(createTrackingDto: CreateTrackingDto) {
+  async create(createTrackingDto: CreateTrackingDto) {
     const { userId, workoutDayId, setLogs } = createTrackingDto;
+
+    // Buscar si ya existe una sesión para este usuario y este día hoy
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const existingSession = await this.prisma.workoutSession.findFirst({
+      where: {
+        userId,
+        workoutDayId,
+        date: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+      include: {
+        setLogs: true,
+      },
+    });
+
+    if (existingSession) {
+      // Si existe, eliminamos los logs anteriores para ese día y creamos los nuevos
+      // (asumimos que el frontend envía el estado completo actualizado)
+      await this.prisma.setLog.deleteMany({
+        where: { workoutSessionId: existingSession.id },
+      });
+
+      return this.prisma.workoutSession.update({
+        where: { id: existingSession.id },
+        data: {
+          setLogs: {
+            create: setLogs.map((log) => ({
+              exerciseId: log.exerciseId,
+              setNumber: log.setNumber,
+              weight: log.weight,
+              reps: log.reps,
+              isCompleted: log.isCompleted ?? true,
+            })),
+          },
+        },
+        include: {
+          setLogs: true,
+        },
+      });
+    }
 
     return this.prisma.workoutSession.create({
       data: {
@@ -39,7 +85,33 @@ export class TrackingService {
           include: {
             exercise: true,
           },
+          orderBy: {
+            setNumber: 'asc',
+          },
         },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+  }
+
+  findByUser(userId: string) {
+    return this.prisma.workoutSession.findMany({
+      where: { userId },
+      include: {
+        workoutDay: true,
+        setLogs: {
+          include: {
+            exercise: true,
+          },
+          orderBy: {
+            setNumber: 'asc',
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
       },
     });
   }

@@ -10,13 +10,14 @@ exports.RoutinesModule = void 0;
 const common_1 = require("@nestjs/common");
 const routines_service_1 = require("./routines.service");
 const routines_controller_1 = require("./routines.controller");
+const routine_generator_service_1 = require("./routine-generator.service");
 let RoutinesModule = class RoutinesModule {
 };
 exports.RoutinesModule = RoutinesModule;
 exports.RoutinesModule = RoutinesModule = __decorate([
     (0, common_1.Module)({
         controllers: [routines_controller_1.RoutinesController],
-        providers: [routines_service_1.RoutinesService],
+        providers: [routines_service_1.RoutinesService, routine_generator_service_1.RoutineGeneratorService],
     })
 ], RoutinesModule);
 //# sourceMappingURL=routines.module.js.map

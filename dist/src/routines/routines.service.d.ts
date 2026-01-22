@@ -13,8 +13,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             }[];
         } & {
             id: string;
@@ -38,11 +38,11 @@ export declare class RoutinesService {
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -51,8 +51,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -76,11 +76,11 @@ export declare class RoutinesService {
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -89,8 +89,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;
@@ -114,11 +114,11 @@ export declare class RoutinesService {
                 exercise: {
                     id: string;
                     name: string;
+                    category: string | null;
+                    muscleGroup: string | null;
                     description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    category: string | null;
-                    muscleGroup: string | null;
                 };
             } & {
                 id: string;
@@ -127,8 +127,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                exerciseId: string;
                 workoutDayId: string;
+                exerciseId: string;
             })[];
         } & {
             id: string;

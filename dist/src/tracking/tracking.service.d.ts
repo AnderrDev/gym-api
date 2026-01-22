@@ -4,12 +4,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export declare class TrackingService {
     private prisma;
     constructor(prisma: PrismaService);
-    create(createTrackingDto: CreateTrackingDto): import("@prisma/client").Prisma.Prisma__WorkoutSessionClient<{
+    create(createTrackingDto: CreateTrackingDto): Promise<{
         setLogs: {
             id: string;
-            weight: number;
             createdAt: Date;
             updatedAt: Date;
+            weight: number;
             exerciseId: string;
             setNumber: number;
             reps: number;
@@ -23,18 +23,42 @@ export declare class TrackingService {
         userId: string;
         workoutDayId: string;
         date: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    }>;
     findAll(): import("@prisma/client").Prisma.PrismaPromise<({
+        setLogs: ({
+            exercise: {
+                id: string;
+                name: string;
+                category: string | null;
+                muscleGroup: string | null;
+                description: string | null;
+                createdAt: Date;
+                updatedAt: Date;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            weight: number;
+            exerciseId: string;
+            setNumber: number;
+            reps: number;
+            isCompleted: boolean;
+            workoutSessionId: string;
+        })[];
         user: {
             id: string;
+            name: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             password: string;
-            name: string | null;
             age: number | null;
             height: number | null;
             weight: number | null;
-            createdAt: Date;
-            updatedAt: Date;
+            goal: string | null;
+            experienceLevel: string | null;
+            trainingDays: number | null;
         };
         workoutDay: {
             id: string;
@@ -44,27 +68,44 @@ export declare class TrackingService {
             order: number;
             routineId: string;
         };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        workoutDayId: string;
+        date: Date;
+    })[]>;
+    findByUser(userId: string): import("@prisma/client").Prisma.PrismaPromise<({
         setLogs: ({
             exercise: {
                 id: string;
                 name: string;
-                createdAt: Date;
-                updatedAt: Date;
-                description: string | null;
                 category: string | null;
                 muscleGroup: string | null;
+                description: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: string;
-            weight: number;
             createdAt: Date;
             updatedAt: Date;
+            weight: number;
             exerciseId: string;
             setNumber: number;
             reps: number;
             isCompleted: boolean;
             workoutSessionId: string;
         })[];
+        workoutDay: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+            order: number;
+            routineId: string;
+        };
     } & {
         id: string;
         createdAt: Date;
@@ -74,16 +115,40 @@ export declare class TrackingService {
         date: Date;
     })[]>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__WorkoutSessionClient<({
+        setLogs: ({
+            exercise: {
+                id: string;
+                name: string;
+                category: string | null;
+                muscleGroup: string | null;
+                description: string | null;
+                createdAt: Date;
+                updatedAt: Date;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            weight: number;
+            exerciseId: string;
+            setNumber: number;
+            reps: number;
+            isCompleted: boolean;
+            workoutSessionId: string;
+        })[];
         user: {
             id: string;
+            name: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             password: string;
-            name: string | null;
             age: number | null;
             height: number | null;
             weight: number | null;
-            createdAt: Date;
-            updatedAt: Date;
+            goal: string | null;
+            experienceLevel: string | null;
+            trainingDays: number | null;
         };
         workoutDay: {
             id: string;
@@ -93,27 +158,6 @@ export declare class TrackingService {
             order: number;
             routineId: string;
         };
-        setLogs: ({
-            exercise: {
-                id: string;
-                name: string;
-                createdAt: Date;
-                updatedAt: Date;
-                description: string | null;
-                category: string | null;
-                muscleGroup: string | null;
-            };
-        } & {
-            id: string;
-            weight: number;
-            createdAt: Date;
-            updatedAt: Date;
-            exerciseId: string;
-            setNumber: number;
-            reps: number;
-            isCompleted: boolean;
-            workoutSessionId: string;
-        })[];
     } & {
         id: string;
         createdAt: Date;
@@ -133,9 +177,9 @@ export declare class TrackingService {
         };
     } & {
         id: string;
-        weight: number;
         createdAt: Date;
         updatedAt: Date;
+        weight: number;
         exerciseId: string;
         setNumber: number;
         reps: number;

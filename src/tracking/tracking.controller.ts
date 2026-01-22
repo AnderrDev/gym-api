@@ -17,6 +17,11 @@ export class TrackingController {
     return this.trackingService.findAll();
   }
 
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.trackingService.findByUser(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.trackingService.findOne(id);

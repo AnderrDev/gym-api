@@ -10,6 +10,27 @@ export class RoutinesService {
   async create(createRoutineDto: CreateRoutineDto) {
     const { name, description, userId, days } = createRoutineDto;
 
+    // Eliminar rutinas anteriores para garantizar una única rutina por usuario
+    await this.prisma.routine.deleteMany({
+      where: { userId },
+    });
+
+    // Validar que todos los ejercicios existen antes de crear la rutina
+    if (days) {
+      for (const day of days) {
+        if (day.exercises) {
+          for (const ex of day.exercises) {
+            const exerciseExists = await this.prisma.exercise.findUnique({
+              where: { id: ex.exerciseId },
+            });
+            if (!exerciseExists) {
+              throw new Error(`Exercise with ID ${ex.exerciseId} not found`);
+            }
+          }
+        }
+      }
+    }
+
     return this.prisma.routine.create({
       data: {
         name,

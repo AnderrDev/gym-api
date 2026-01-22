@@ -5,4 +5,7 @@ export class CreateUserDto {
     age?: number;
     height?: number;
     weight?: number;
+    goal?: string;
+    experienceLevel?: string;
+    trainingMonths?: number;
 }
