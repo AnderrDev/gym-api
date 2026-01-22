@@ -28,6 +28,9 @@ let RoutinesController = class RoutinesController {
     findAll() {
         return this.routinesService.findAll();
     }
+    findByUser(userId) {
+        return this.routinesService.findByUserId(userId);
+    }
     findOne(id) {
         return this.routinesService.findOne(id);
     }
@@ -52,6 +55,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], RoutinesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('user/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], RoutinesController.prototype, "findByUser", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -56,6 +56,23 @@ export class RoutinesService {
     });
   }
 
+  findByUserId(userId: string) {
+    return this.prisma.routine.findMany({
+      where: { userId },
+      include: {
+        workoutDays: {
+          include: {
+            routineExercises: {
+              include: {
+                exercise: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.routine.findUnique({
       where: { id },

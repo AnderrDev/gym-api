@@ -13,8 +13,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
                 exerciseId: string;
+                workoutDayId: string;
             }[];
         } & {
             id: string;
@@ -27,9 +27,9 @@ export declare class RoutinesService {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }>;
     findAll(): import("@prisma/client").Prisma.PrismaPromise<({
@@ -38,9 +38,9 @@ export declare class RoutinesService {
                 exercise: {
                     id: string;
                     name: string;
+                    description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    description: string | null;
                     category: string | null;
                     muscleGroup: string | null;
                 };
@@ -51,8 +51,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
                 exerciseId: string;
+                workoutDayId: string;
             })[];
         } & {
             id: string;
@@ -65,9 +65,47 @@ export declare class RoutinesService {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
+        userId: string;
+    })[]>;
+    findByUserId(userId: string): import("@prisma/client").Prisma.PrismaPromise<({
+        workoutDays: ({
+            routineExercises: ({
+                exercise: {
+                    id: string;
+                    name: string;
+                    description: string | null;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    category: string | null;
+                    muscleGroup: string | null;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                order: number;
+                targetSets: number;
+                targetReps: string | null;
+                exerciseId: string;
+                workoutDayId: string;
+            })[];
+        } & {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+            order: number;
+            routineId: string;
+        })[];
+    } & {
+        id: string;
+        name: string;
         description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     })[]>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__RoutineClient<({
@@ -76,9 +114,9 @@ export declare class RoutinesService {
                 exercise: {
                     id: string;
                     name: string;
+                    description: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    description: string | null;
                     category: string | null;
                     muscleGroup: string | null;
                 };
@@ -89,8 +127,8 @@ export declare class RoutinesService {
                 order: number;
                 targetSets: number;
                 targetReps: string | null;
-                workoutDayId: string;
                 exerciseId: string;
+                workoutDayId: string;
             })[];
         } & {
             id: string;
@@ -103,25 +141,25 @@ export declare class RoutinesService {
     } & {
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     update(id: string, updateRoutineDto: UpdateRoutineDto): import("@prisma/client").Prisma.Prisma__RoutineClient<{
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     remove(id: string): import("@prisma/client").Prisma.Prisma__RoutineClient<{
         id: string;
         name: string;
+        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
 }

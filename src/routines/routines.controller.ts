@@ -17,6 +17,11 @@ export class RoutinesController {
     return this.routinesService.findAll();
   }
 
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.routinesService.findByUserId(userId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.routinesService.findOne(id);
