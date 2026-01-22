@@ -4,6 +4,8 @@ export interface GeneratedExercise {
     name: string;
     targetSets: number;
     targetReps: string;
+    restTime?: number | null;
+    defaultWeight?: number | null;
     order: number;
 }
 export interface GeneratedDay {
@@ -27,4 +29,9 @@ export declare class RoutineGeneratorService {
     private getFriendlyGoal;
     private createDay;
     private getRepsForGoal;
+    private calculateBMI;
+    private getVolumeMultiplier;
+    private adjustSetsForUser;
+    private getRestTimeForGoal;
+    private shouldIncludeExercise;
 }
